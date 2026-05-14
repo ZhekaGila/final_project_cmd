@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/product_provider.dart';
 import '../../widgets/product_card.dart';
+import '../../widgets/loading_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -101,7 +102,7 @@ class HomeScreen extends ConsumerWidget {
           },
 
           loading: () {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingWidget();
           },
         ),
       ),
