@@ -12,6 +12,7 @@ abstract class ProductService extends ChopperService {
       baseUrl: Uri.parse('https://fakestoreapi.com'),
       services: [_$ProductService()],
       converter: const JsonConverter(),
+      interceptors: [HttpLoggingInterceptor()],
     );
 
     return _$ProductService(client);

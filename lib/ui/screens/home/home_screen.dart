@@ -20,6 +20,12 @@ class HomeScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.shopping_cart),
           ),
+          IconButton(
+            onPressed: () {
+              context.push('/favorites');
+            },
+            icon: const Icon(Icons.favorite),
+          ),
         ],
       ),
       body: productsAsync.when(

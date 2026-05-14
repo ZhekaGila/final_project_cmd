@@ -4,6 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/cart_provider.dart';
 import '../../../data/models/product_model.dart';
 
+import 'package:drift/drift.dart' as drift;
+
+import '../../../data/services/local/app_database.dart';
+import '../../providers/favorites_provider.dart';
+
 class ProductDetailsScreen extends ConsumerWidget {
   final ProductModel product;
 
@@ -48,6 +53,33 @@ class ProductDetailsScreen extends ConsumerWidget {
                   );
                 },
                 child: const Text('Add to Cart'),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final db = ref.read(databaseProvider);
+
+                  await db.insertFavorite(
+                    FavoritesCompanion(
+                      id: drift.Value(product.id),
+                      title: drift.Value(product.title),
+                      price: drift.Value(product.price),
+                      image: drift.Value(product.image),
+                    ),
+                  );
+
+                  ref.invalidate(favoritesProvider);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Added to favorites')),
+                  );
+                },
+                child: const Text('Add to Favorites'),
               ),
             ),
           ],
