@@ -32,7 +32,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> insertFavorite(FavoritesCompanion favorite) {
-    return into(favorites).insert(favorite);
+    return into(favorites).insert(favorite, mode: InsertMode.insertOrIgnore);
   }
 
   Future<void> deleteFavorite(int id) {
