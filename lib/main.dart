@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'ui/providers/theme_provider.dart';
 import 'core/router/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -19,8 +19,11 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      title: 'Super Puper eCommerce Market Place App',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
     );
   }
 }
