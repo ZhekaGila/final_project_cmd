@@ -21,7 +21,7 @@ class ProductDetailsScreen extends ConsumerWidget {
 
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

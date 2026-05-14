@@ -53,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
             data: (products) {
               return GridView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(16),
                 itemCount: products.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,

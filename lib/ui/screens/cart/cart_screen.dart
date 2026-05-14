@@ -42,8 +42,13 @@ class CartScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(16),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(color: Colors.grey.shade300),
+                      ),
+                    ),
                     child: Column(
                       children: [
                         Text(
