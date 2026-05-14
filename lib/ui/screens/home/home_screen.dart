@@ -32,6 +32,12 @@ class HomeScreen extends ConsumerWidget {
             },
             icon: const Icon(Icons.settings),
           ),
+          IconButton(
+            onPressed: () {
+              context.push('/orders');
+            },
+            icon: const Icon(Icons.receipt_long),
+          ),
         ],
       ),
       body: RefreshIndicator(

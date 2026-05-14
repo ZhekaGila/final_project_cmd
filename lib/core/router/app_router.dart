@@ -6,6 +6,7 @@ import '../../ui/screens/home/home_screen.dart';
 import '../../ui/screens/product/product_details_screen.dart';
 import '../../ui/screens/favorites/favorites_screen.dart';
 import '../../ui/screens/settings/settings_screen.dart';
+import '../../ui/screens/orders/orders_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -31,5 +32,7 @@ final GoRouter appRouter = GoRouter(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
     ),
+
+    GoRoute(path: '/orders', builder: (context, state) => const OrdersScreen()),
   ],
 );
