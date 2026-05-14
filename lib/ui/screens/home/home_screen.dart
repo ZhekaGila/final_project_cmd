@@ -42,68 +42,70 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.refresh(productsProvider);
-        },
-        triggerMode: RefreshIndicatorTriggerMode.onEdge,
-        displacement: 70,
-        child: productsAsync.when(
-          data: (products) {
-            return GridView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(12),
-              itemCount: products.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 0.7,
-              ),
-              itemBuilder: (context, index) {
-                final product = products[index];
-
-                return ProductCard(
-                  product: product,
-                  onTap: () {
-                    context.push('/product', extra: product);
-                  },
-                );
-              },
-            );
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () async {
+            ref.refresh(productsProvider);
           },
+          triggerMode: RefreshIndicatorTriggerMode.onEdge,
+          displacement: 70,
+          child: productsAsync.when(
+            data: (products) {
+              return GridView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(12),
+                itemCount: products.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.7,
+                ),
+                itemBuilder: (context, index) {
+                  final product = products[index];
 
-          error: (error, stack) {
-            return ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(error.toString()),
+                  return ProductCard(
+                    product: product,
+                    onTap: () {
+                      context.push('/product', extra: product);
+                    },
+                  );
+                },
+              );
+            },
 
-                        const SizedBox(height: 16),
+            error: (error, stack) {
+              return ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(error.toString()),
 
-                        ElevatedButton(
-                          onPressed: () {
-                            ref.refresh(productsProvider);
-                          },
-                          child: const Text('Retry'),
-                        ),
-                      ],
+                          const SizedBox(height: 16),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              ref.refresh(productsProvider);
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
 
-          loading: () {
-            return const LoadingWidget();
-          },
+            loading: () {
+              return const LoadingWidget();
+            },
+          ),
         ),
       ),
     );

@@ -12,31 +12,33 @@ class FavoritesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Favorites')),
-      body: favoritesAsync.when(
-        data: (favorites) {
-          if (favorites.isEmpty) {
-            return const Center(child: Text('No favorites yet'));
-          }
+      body: SafeArea(
+        child: favoritesAsync.when(
+          data: (favorites) {
+            if (favorites.isEmpty) {
+              return const Center(child: Text('No favorites yet'));
+            }
 
-          return ListView.builder(
-            itemCount: favorites.length,
-            itemBuilder: (context, index) {
-              final item = favorites[index];
+            return ListView.builder(
+              itemCount: favorites.length,
+              itemBuilder: (context, index) {
+                final item = favorites[index];
 
-              return ListTile(
-                leading: Image.network(item.image, width: 50),
-                title: Text(item.title),
-                subtitle: Text('\$${item.price}'),
-              );
-            },
-          );
-        },
-        error: (error, stack) {
-          return Center(child: Text(error.toString()));
-        },
-        loading: () {
-          return const Center(child: CircularProgressIndicator());
-        },
+                return ListTile(
+                  leading: Image.network(item.image, width: 50),
+                  title: Text(item.title),
+                  subtitle: Text('\$${item.price}'),
+                );
+              },
+            );
+          },
+          error: (error, stack) {
+            return Center(child: Text(error.toString()));
+          },
+          loading: () {
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }

@@ -14,64 +14,66 @@ class CartScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Cart')),
-      body: cartItems.isEmpty
-          ? const Center(child: Text('Cart is empty'))
-          : Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: cartItems.length,
-                    itemBuilder: (context, index) {
-                      final product = cartItems[index];
+      body: SafeArea(
+        child: cartItems.isEmpty
+            ? const Center(child: Text('Cart is empty'))
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        final product = cartItems[index];
 
-                      return ListTile(
-                        leading: Image.network(product.image, width: 50),
-                        title: Text(product.title),
-                        subtitle: Text('\$${product.price}'),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            ref
-                                .read(cartProvider.notifier)
-                                .removeFromCart(product);
+                        return ListTile(
+                          leading: Image.network(product.image, width: 50),
+                          title: Text(product.title),
+                          subtitle: Text('\$${product.price}'),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              ref
+                                  .read(cartProvider.notifier)
+                                  .removeFromCart(product);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Total: \$${total.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        ElevatedButton(
+                          onPressed: () async {
+                            final firestoreService = FirestoreService();
+                            await firestoreService.saveOrder(cartItems);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Order saved to Firestore'),
+                              ),
+                            );
                           },
+                          child: const Text('Checkout'),
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Total: \$${total.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
-
-                      ElevatedButton(
-                        onPressed: () async {
-                          final firestoreService = FirestoreService();
-                          await firestoreService.saveOrder(cartItems);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Order saved to Firestore'),
-                            ),
-                          );
-                        },
-                        child: const Text('Checkout'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 }

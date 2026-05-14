@@ -12,35 +12,37 @@ class OrdersScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Orders')),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestoreService.getOrders(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return const Center(child: Text('Error loading orders'));
-          }
+      body: SafeArea(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: firestoreService.getOrders(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text('Error loading orders'));
+            }
 
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          final orders = snapshot.data!.docs;
+            final orders = snapshot.data!.docs;
 
-          if (orders.isEmpty) {
-            return const Center(child: Text('No orders yet'));
-          }
+            if (orders.isEmpty) {
+              return const Center(child: Text('No orders yet'));
+            }
 
-          return ListView.builder(
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              final order = orders[index].data() as Map<String, dynamic>;
+            return ListView.builder(
+              itemCount: orders.length,
+              itemBuilder: (context, index) {
+                final order = orders[index].data() as Map<String, dynamic>;
 
-              return ListTile(
-                title: Text('Total: \$${order['total']}'),
-                subtitle: Text(order['date']),
-              );
-            },
-          );
-        },
+                return ListTile(
+                  title: Text('Total: \$${order['total']}'),
+                  subtitle: Text(order['date']),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

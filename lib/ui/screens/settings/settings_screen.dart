@@ -14,12 +14,14 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
-      body: SwitchListTile(
-        title: const Text('Dark Mode'),
-        value: isDark,
-        onChanged: (_) {
-          ref.read(themeProvider.notifier).toggleTheme();
-        },
+      body: SafeArea(
+        child: SwitchListTile(
+          title: const Text('Dark Mode'),
+          value: isDark,
+          onChanged: (_) {
+            ref.read(themeProvider.notifier).toggleTheme();
+          },
+        ),
       ),
     );
   }

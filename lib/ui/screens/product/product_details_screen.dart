@@ -18,71 +18,110 @@ class ProductDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text('Product Details')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(child: Image.network(product.image, height: 250)),
 
-            const SizedBox(height: 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
 
-            Text(
-              product.title,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
 
-            const SizedBox(height: 12),
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
 
-            Text('\$${product.price}', style: const TextStyle(fontSize: 20)),
+                child: Image.network(
+                  product.image,
+                  height: 250,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
 
-            const SizedBox(height: 20),
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) {
+                      return child;
+                    }
 
-            Text(product.description),
+                    return const SizedBox(
+                      height: 250,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  },
 
-            const SizedBox(height: 30),
-
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  ref.read(cartProvider.notifier).addToCart(product);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Added to cart')),
-                  );
-                },
-                child: const Text('Add to Cart'),
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox(
+                      height: 250,
+                      child: Center(child: Icon(Icons.error)),
+                    );
+                  },
+                ),
               ),
-            ),
 
-            const SizedBox(height: 12),
+              const SizedBox(height: 20),
 
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () async {
-                  final db = ref.read(databaseProvider);
-
-                  await db.insertFavorite(
-                    FavoritesCompanion(
-                      id: drift.Value(product.id),
-                      title: drift.Value(product.title),
-                      price: drift.Value(product.price),
-                      image: drift.Value(product.image),
-                    ),
-                  );
-
-                  ref.invalidate(favoritesProvider);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Added to favorites')),
-                  );
-                },
-                child: const Text('Add to Favorites'),
+              Text(
+                product.title,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 12),
+
+              Text('\$${product.price}', style: const TextStyle(fontSize: 20)),
+
+              const SizedBox(height: 20),
+
+              Text(product.description),
+
+              const SizedBox(height: 30),
+
+              SizedBox(
+                width: double.infinity,
+
+                child: ElevatedButton(
+                  onPressed: () {
+                    ref.read(cartProvider.notifier).addToCart(product);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Added to cart')),
+                    );
+                  },
+
+                  child: const Text('Add to Cart'),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              SizedBox(
+                width: double.infinity,
+
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final db = ref.read(databaseProvider);
+
+                    await db.insertFavorite(
+                      FavoritesCompanion(
+                        id: drift.Value(product.id),
+                        title: drift.Value(product.title),
+                        price: drift.Value(product.price),
+                        image: drift.Value(product.image),
+                      ),
+                    );
+
+                    ref.invalidate(favoritesProvider);
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Added to favorites')),
+                    );
+                  },
+
+                  child: const Text('Add to Favorites'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
