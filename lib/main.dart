@@ -18,12 +18,15 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return MaterialApp.router(
-      title: 'Super Puper eCommerce Market Place App',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
+
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
     );
   }
 }

@@ -29,6 +29,11 @@ class AppTheme {
         borderSide: BorderSide.none,
       ),
     ),
+
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      brightness: Brightness.light,
+    ),
   );
 
   static final darkTheme = ThemeData(
@@ -56,6 +61,11 @@ class AppTheme {
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide.none,
       ),
+    ),
+
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      brightness: Brightness.dark,
     ),
   );
 }

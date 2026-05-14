@@ -13,6 +13,10 @@ class CartNotifier extends StateNotifier<List<ProductModel>> {
     state = state.where((item) => item.id != product.id).toList();
   }
 
+  void clearCart() {
+    state = [];
+  }
+
   double get totalPrice {
     return state.fold(0, (sum, item) => sum + item.price);
   }

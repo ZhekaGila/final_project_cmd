@@ -64,11 +64,13 @@ class CartScreen extends ConsumerWidget {
                         ElevatedButton(
                           onPressed: () async {
                             final firestoreService = FirestoreService();
+
                             await firestoreService.saveOrder(cartItems);
+
+                            ref.read(cartProvider.notifier).clearCart();
+
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Order saved to Firestore'),
-                              ),
+                              const SnackBar(content: Text('Order placed')),
                             );
                           },
                           child: const Text('Checkout'),

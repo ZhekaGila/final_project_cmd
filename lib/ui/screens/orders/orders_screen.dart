@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'order_details_screen.dart';
 import '../../../data/services/firebase/firestore_service.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -38,6 +38,14 @@ class OrdersScreen extends StatelessWidget {
                 return ListTile(
                   title: Text('Total: \$${order['total']}'),
                   subtitle: Text(order['date']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => OrderDetailsScreen(order: order),
+                      ),
+                    );
+                  },
                 );
               },
             );

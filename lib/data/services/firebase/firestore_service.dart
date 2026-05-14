@@ -10,11 +10,16 @@ class FirestoreService {
 
     await _firestore.collection('orders').add({
       'date': DateTime.now().toIso8601String(),
-
       'total': total,
-
-      'products': products
-          .map((p) => {'title': p.title, 'price': p.price})
+      'items': products
+          .map(
+            (p) => {
+              'id': p.id,
+              'title': p.title,
+              'price': p.price,
+              'image': p.image,
+            },
+          )
           .toList(),
     });
   }
