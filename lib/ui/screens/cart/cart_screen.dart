@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../../data/services/firebase/firestore_service.dart';
 import '../../providers/cart_provider.dart';
 
 class CartScreen extends ConsumerWidget {
@@ -56,7 +56,15 @@ class CartScreen extends ConsumerWidget {
                       const SizedBox(height: 12),
 
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final firestoreService = FirestoreService();
+                          await firestoreService.saveOrder(cartItems);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Order saved to Firestore'),
+                            ),
+                          );
+                        },
                         child: const Text('Checkout'),
                       ),
                     ],
