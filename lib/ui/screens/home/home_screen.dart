@@ -28,52 +28,115 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: productsAsync.when(
-        data: (products) {
-          return GridView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: products.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 0.7,
-            ),
-            itemBuilder: (context, index) {
-              final product = products[index];
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.refresh(productsProvider);
+        },
+        triggerMode: RefreshIndicatorTriggerMode.onEdge,
+        displacement: 70,
+        child: productsAsync.when(
+          data: (products) {
+            return GridView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(12),
+              itemCount: products.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.7,
+              ),
+              itemBuilder: (context, index) {
+                final product = products[index];
 
-              return GestureDetector(
-                onTap: () {
-                  context.push('/product', extra: product);
-                },
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
+                return GestureDetector(
+                  onTap: () {
+                    context.push('/product', extra: product);
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: SizedBox(
+                              height: 160,
+                              width: double.infinity,
+                              child: Image.network(
+                                product.image,
+                                fit: BoxFit.cover,
+
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Center(child: Icon(Icons.error));
+                                },
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          Text(
+                            product.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          Text('\$${product.price}'),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+
+          error: (error, stack) {
+            return ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Center(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(child: Image.network(product.image)),
-                        const SizedBox(height: 8),
-                        Text(
-                          product.title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        Text(error.toString()),
+
+                        const SizedBox(height: 16),
+
+                        ElevatedButton(
+                          onPressed: () {
+                            ref.refresh(productsProvider);
+                          },
+                          child: const Text('Retry'),
                         ),
-                        const SizedBox(height: 8),
-                        Text('\$${product.price}'),
                       ],
                     ),
                   ),
                 ),
-              );
-            },
-          );
-        },
-        error: (error, stack) {
-          return Center(child: Text(error.toString()));
-        },
-        loading: () {
-          return const Center(child: CircularProgressIndicator());
-        },
+              ],
+            );
+          },
+
+          loading: () {
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
