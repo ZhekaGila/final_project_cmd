@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/product_provider.dart';
+import '../../widgets/product_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -61,57 +62,11 @@ class HomeScreen extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final product = products[index];
 
-                return GestureDetector(
+                return ProductCard(
+                  product: product,
                   onTap: () {
                     context.push('/product', extra: product);
                   },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: SizedBox(
-                              height: 160,
-                              width: double.infinity,
-                              child: Image.network(
-                                product.image,
-                                fit: BoxFit.cover,
-
-                                loadingBuilder:
-                                    (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      }
-
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Center(child: Icon(Icons.error));
-                                },
-                              ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          Text(
-                            product.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          Text('\$${product.price}'),
-                        ],
-                      ),
-                    ),
-                  ),
                 );
               },
             );
