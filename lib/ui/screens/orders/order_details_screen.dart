@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../widgets/product/product_card.dart';
 import '../../widgets/product/product_card_type.dart';
+import '../../../data/models/product_model.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> order;
@@ -27,13 +29,21 @@ class OrderDetailsScreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
-                final item = items[index];
+                final item = ProductModel.fromJson(items[index]);
 
-                return ListTile(
-                  leading: Image.network(item['image']),
-                  title: Text(item['title']),
-                  subtitle: Text('\$${item['price']}'),
+                return ProductCard(
+                  product: item,
+                  onTap: () {
+                    context.push('/product', extra: item);
+                  },
+                  type: ProductCardType.list,
                 );
+
+                // return ListTile(
+                //   leading: Image.network(item['image']),
+                //   title: Text(item['title']),
+                //   subtitle: Text('\$${item['price']}'),
+                // );
               },
             ),
           ),

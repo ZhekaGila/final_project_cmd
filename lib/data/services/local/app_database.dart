@@ -16,6 +16,10 @@ class Favorites extends Table {
 
   TextColumn get image => text()();
 
+  TextColumn get description => text()();
+
+  TextColumn get category => text()();
+
   @override
   Set<Column> get primaryKey => {id};
 }

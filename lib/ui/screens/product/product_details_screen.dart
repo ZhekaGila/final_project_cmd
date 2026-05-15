@@ -107,6 +107,8 @@ class ProductDetailsScreen extends ConsumerWidget {
                         title: drift.Value(product.title),
                         price: drift.Value(product.price),
                         image: drift.Value(product.image),
+                        description: drift.Value(product.description),
+                        category: drift.Value(product.category),
                       ),
                     );
 

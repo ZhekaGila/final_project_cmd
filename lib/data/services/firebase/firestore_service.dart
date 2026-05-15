@@ -18,6 +18,8 @@ class FirestoreService {
               'title': p.title,
               'price': p.price,
               'image': p.image,
+              'category': p.category,
+              'description': p.description,
             },
           )
           .toList(),
