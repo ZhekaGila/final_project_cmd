@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../widgets/product/product_card.dart';
+import '../../widgets/product/product_card_type.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> order;

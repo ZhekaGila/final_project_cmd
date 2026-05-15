@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../data/models/product_model.dart';
+import '../../../data/models/product_model.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductGridCard extends StatelessWidget {
   final ProductModel product;
   final VoidCallback onTap;
 
-  const ProductCard({super.key, required this.product, required this.onTap});
+  const ProductGridCard({
+    super.key,
+    required this.product,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {

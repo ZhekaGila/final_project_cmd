@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/product_provider.dart';
-import '../../widgets/product_card.dart';
-import '../../widgets/loading_widget.dart';
+import '../../widgets/product/product_card.dart';
+import '../../widgets/product/product_card_type.dart';
+import '../../widgets/loading/loading_widget.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -69,6 +70,7 @@ class HomeScreen extends ConsumerWidget {
                     onTap: () {
                       context.push('/product', extra: product);
                     },
+                    type: ProductCardType.grid,
                   );
                 },
               );
