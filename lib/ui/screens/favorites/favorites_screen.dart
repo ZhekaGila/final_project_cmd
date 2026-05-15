@@ -23,7 +23,7 @@ class FavoritesScreen extends ConsumerWidget {
               return const Center(child: Text('No favorites yet'));
             }
 
-            return ListView.builder(
+            return ListView.separated(
               itemCount: favorites.length,
               itemBuilder: (context, index) {
                 final favorite = favorites[index];
@@ -45,6 +45,7 @@ class FavoritesScreen extends ConsumerWidget {
                   type: ProductCardType.list,
                 );
               },
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
             );
           },
           error: (error, stack) {

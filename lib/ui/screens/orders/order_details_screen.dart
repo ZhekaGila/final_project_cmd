@@ -26,7 +26,7 @@ class OrderDetailsScreen extends StatelessWidget {
           ),
 
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = ProductModel.fromJson(items[index]);
@@ -39,6 +39,7 @@ class OrderDetailsScreen extends StatelessWidget {
                   type: ProductCardType.list,
                 );
               },
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
             ),
           ),
         ],

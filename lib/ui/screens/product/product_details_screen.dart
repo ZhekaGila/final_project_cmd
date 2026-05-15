@@ -17,8 +17,17 @@ class ProductDetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartItems = ref.watch(cartProvider);
+    final favoritesAsync = ref.watch(favoritesProvider);
 
     final isInCart = cartItems.any((item) => item.id == product.id);
+
+    final isFavorite = favoritesAsync.when(
+      data: (favorites) {
+        return favorites.any((item) => item.id == product.id);
+      },
+      loading: () => false,
+      error: (_, __) => false,
+    );
 
     return Scaffold(
       appBar: AppBar(title: const Text('Product Details')),
@@ -97,34 +106,53 @@ class ProductDetailsScreen extends ConsumerWidget {
                 ),
               const SizedBox(height: 12),
 
-              SizedBox(
-                width: double.infinity,
-
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final db = ref.read(databaseProvider);
-
-                    await db.insertFavorite(
-                      FavoritesCompanion(
-                        id: drift.Value(product.id),
-                        title: drift.Value(product.title),
-                        price: drift.Value(product.price),
-                        image: drift.Value(product.image),
-                        description: drift.Value(product.description),
-                        category: drift.Value(product.category),
-                      ),
-                    );
-
-                    ref.invalidate(favoritesProvider);
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added to favorites')),
-                    );
-                  },
-
-                  child: const Text('Add to Favorites'),
+              if (isInCart)
+                SizedBox(
+                  width: double.infinity,
+                  child: const Text(
+                    ('Already in Cart'),
+                    style: TextStyle(color: Colors.blueGrey),
+                  ),
                 ),
-              ),
+
+              if (!isFavorite)
+                SizedBox(
+                  width: double.infinity,
+
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final db = ref.read(databaseProvider);
+
+                      await db.insertFavorite(
+                        FavoritesCompanion(
+                          id: drift.Value(product.id),
+                          title: drift.Value(product.title),
+                          price: drift.Value(product.price),
+                          image: drift.Value(product.image),
+                          description: drift.Value(product.description),
+                          category: drift.Value(product.category),
+                        ),
+                      );
+
+                      ref.invalidate(favoritesProvider);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to favorites')),
+                      );
+                    },
+
+                    child: const Text('Add to Favorites'),
+                  ),
+                ),
+
+              if (isFavorite)
+                SizedBox(
+                  width: double.infinity,
+                  child: const Text(
+                    'Already in Favorites',
+                    style: TextStyle(color: Colors.blueGrey),
+                  ),
+                ),
             ],
           ),
         ),

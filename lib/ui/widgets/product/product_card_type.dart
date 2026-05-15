@@ -1,1 +1,1 @@
-enum ProductCardType { grid, list }
+enum ProductCardType { grid, list, cart }

@@ -1,8 +1,10 @@
+import 'package:final_project_cmd/ui/widgets/product/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/services/firebase/firestore_service.dart';
 import '../../providers/cart_provider.dart';
+import '../../widgets/product/product_card_type.dart';
 
 class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
@@ -11,7 +13,7 @@ class CartScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartItems = ref.watch(cartProvider);
 
-    final total = ref.read(cartProvider.notifier).totalPrice;
+    final total = ref.watch(cartProvider.notifier).totalPrice;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Cart')),
@@ -21,25 +23,26 @@ class CartScreen extends ConsumerWidget {
             : Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: cartItems.length,
                       itemBuilder: (context, index) {
                         final product = cartItems[index];
 
-                        return ListTile(
-                          leading: Image.network(product.image, width: 50),
-                          title: Text(product.title),
-                          subtitle: Text('\$${product.price}'),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              ref
-                                  .read(cartProvider.notifier)
-                                  .removeFromCart(product);
-                            },
-                          ),
+                        return ProductCard(
+                          product: product,
+                          onTap: () {
+                            context.push('/product', extra: product);
+                          },
+                          onTrashTap: () {
+                            ref
+                                .read(cartProvider.notifier)
+                                .removeFromCart(product);
+                          },
+                          type: ProductCardType.cart,
                         );
                       },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
                     ),
                   ),
 
