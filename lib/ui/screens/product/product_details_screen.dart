@@ -16,6 +16,10 @@ class ProductDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cartItems = ref.watch(cartProvider);
+
+    final isInCart = cartItems.any((item) => item.id == product.id);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Product Details')),
 
@@ -75,23 +79,22 @@ class ProductDetailsScreen extends ConsumerWidget {
               Text(product.description),
 
               const SizedBox(height: 30),
+              if (!isInCart)
+                SizedBox(
+                  width: double.infinity,
 
-              SizedBox(
-                width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(cartProvider.notifier).addToCart(product);
 
-                child: ElevatedButton(
-                  onPressed: () {
-                    ref.read(cartProvider.notifier).addToCart(product);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to cart')),
+                      );
+                    },
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added to cart')),
-                    );
-                  },
-
-                  child: const Text('Add to Cart'),
+                    child: const Text('Add to Cart'),
+                  ),
                 ),
-              ),
-
               const SizedBox(height: 12),
 
               SizedBox(

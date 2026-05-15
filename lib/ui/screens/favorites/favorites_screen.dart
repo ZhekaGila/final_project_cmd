@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../widgets/product/product_card.dart';
+import '../../widgets/product/product_card_type.dart';
+import '../../../data/models/product_model.dart';
 import '../../providers/favorites_provider.dart';
 
 class FavoritesScreen extends ConsumerWidget {
@@ -22,12 +26,23 @@ class FavoritesScreen extends ConsumerWidget {
             return ListView.builder(
               itemCount: favorites.length,
               itemBuilder: (context, index) {
-                final item = favorites[index];
+                final favorite = favorites[index];
 
-                return ListTile(
-                  leading: Image.network(item.image, width: 50),
-                  title: Text(item.title),
-                  subtitle: Text('\$${item.price}'),
+                final item = ProductModel(
+                  id: favorite.id,
+                  title: favorite.title,
+                  price: favorite.price,
+                  description: favorite.description,
+                  category: favorite.category,
+                  image: favorite.image,
+                );
+
+                return ProductCard(
+                  product: item,
+                  onTap: () {
+                    context.push('/product', extra: item);
+                  },
+                  type: ProductCardType.list,
                 );
               },
             );

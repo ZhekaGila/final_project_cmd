@@ -38,12 +38,6 @@ class OrderDetailsScreen extends StatelessWidget {
                   },
                   type: ProductCardType.list,
                 );
-
-                // return ListTile(
-                //   leading: Image.network(item['image']),
-                //   title: Text(item['title']),
-                //   subtitle: Text('\$${item['price']}'),
-                // );
               },
             ),
           ),
